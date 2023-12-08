@@ -1,157 +1,160 @@
-/*
-A double-ended queue (deque) is a linear list in which additions and deletions may be made at either end. Obtain a data
-representation mapping a deque into a one-dimensional array. Write C++ program to simulate deque with functions to add 
-and delete elements from either end of the deque. 
-*/
-
 #include<iostream>
-#include<stdio.h>
-#define MAX 10
+//#include
+//#include
 using namespace std;
-
-struct que
+#define SIZE 5
+// ERROR HANDLINH NOT DOne
+// program is not working correct.
+//
+class dequeue
 {
-    int arr[MAX];
-    int front,rear;
+int a[10],front,rear,count;
+public:
+dequeue();
+void add_at_beg(int);
+void add_at_end(int);
+void delete_fr_front();
+void delete_fr_rear();
+void display();
 };
-
-void init(struct que *q)
+dequeue::dequeue()
 {
-    q->front=-1;
-    q->rear=-1;
+front=-1;
+rear=-1;
+count=0;
+}
+void dequeue::add_at_beg(int item)
+{
+int i;
+if(front==-1)
+{
+front++;
+rear++;
+a[rear]=item;
+count++;
+}
+else if(rear>=SIZE-1)
+
+{
+cout<<"\nInsertion is not possible,overflow!!!!";
+}
+else
+{
+for(i=count;i>=0;i--)
+{
+a[i]=a[i-1];
+}
+a[i]=item;
+count++;
+rear++;
+}
+}
+void dequeue::add_at_end(int item)
+{
+if(front==-1)
+{
+front++;
+rear++;
+a[rear]=item;
+count++;
+}
+else if(rear>=SIZE-1)
+{
+cout<<"\nInsertion is not possible,overflow!!!";
+return;
+}
+else
+{
+a[++rear]=item;
+}
+}
+void dequeue::display()
+{
+for(int i=front;i<=rear;i++)
+{
+cout<<a[i]<<" "; }
+
+}
+void dequeue::delete_fr_front()
+{
+if(front==-1)
+{
+cout<<"Deletion is not possible:: Dequeue is empty";
+return;
 }
 
-void print(struct que q)
+else
 {
-    int i;
-    i=q.front;
-    while(i!=q.rear)
-    {
-        cout<<"\t"<<q.arr[i];
-        i=(i+1)%MAX;
-    }
-    cout<<"\t"<<q.arr[q.rear];
-}
-
-int isempty(struct que q)
+if(front==rear)
 {
-    return q.rear==-1?1:0;
+front=rear=-1;
+return;
 }
-
-int isfull(struct que q)
+cout<<"The deleted element is "<<a[front];
+front=front+1;
+}
+}
+void dequeue::delete_fr_rear()
 {
-    return (q.rear+1)%MAX==q.front?1:0;
-}
-
-void addf(struct que *q,int data)
+if(front==-1)
 {
-    if(isempty(*q))
-    {
-        q->front=q->rear=0;
-        q->arr[q->front]=data;
-    }
-    else
-    {
-        q->front=(q->front-1+MAX)%MAX;
-        q->arr[q->front]=data;
-    }
+cout<<"Deletion is not possible:Dequeue is empty";
+return;
 }
-
-void addr(struct que *q,int data)
+else
 {
-    if(isempty(*q))
-    {
-        q->front=q->rear=0;
-        q->arr[q->rear]=data;
-    }
-    else
-    {
-        q->rear=(q->rear+1)%MAX;
-        q->arr[q->rear]=data;
-    }
-}
-
-int delf(struct que *q)
+if(front==rear)
 {
-    int data1;
-    data1=q->arr[q->front];
-    if(q->front==q->rear)
-        init(q);
-    else
-        q->front=(q->front+1)%MAX;
-    return data1;
+front=rear=-1;
 }
-
-int delr(struct que *q)
-{
-    int data1;
-    data1=q->arr[q->rear];
-    if(q->front==q->rear)
-        init(q);
-    else
-        q->rear=(q->rear-1+MAX)%MAX;
-    return data1;
+cout<<"The deleted element is "<< a[rear];
+rear=rear-1;
 }
-
+}
 int main()
 {
-    struct que q;
-    int data,ch;
-    init(&q);
-    while(ch!=6)
-    {
-        cout<<"\t\n1.Insert front"
-                "\t\n2.Insert rear"
-                "\t\n3.Delete front"
-                "\t\n4.Delete rear"
-                "\t\n5.Print"
-                "\t\n6.Exit";
-         cout<<"\nEnter your choice : ";
-        cin>>ch;
-        switch(ch)
-        {
-           case 1:
-              cout<<"\nEnter data to insert front : ";
-              cin>>data;
-              addf(&q,data);
-              break;
+int c,item;
+dequeue d1;
+do
+{
+cout<<"\n\n****DEQUEUE OPERATION****\n";
+cout<<"\n1-Insert at beginning";
+cout<<"\n2-Insert at end";
+cout<<"\n3_Display";
+cout<<"\n4_Deletion from front";
+cout<<"\n5-Deletion from rear";
+cout<<"\n6_Exit";
+cout<<"\nEnter your choice<1-4>:";
+cin>>c;
+switch(c)
+{
+case 1:
 
-           case 2:
-               cout<<"\nEnter the data to insert rear : ";
-               cin>>data;
-               addr(&q,data);
-               break;
-
-           case 3:
-               if(isempty(q))
-                   cout<<"\nDequeue is empty!!!";
-               else
-               {
-                   data=delf(&q);
-                   cout<<"\nDeleted data is : "<<data;
-               }
-               break;
-
-           case 4:
-               if(isempty(q))
-                   cout<<"\nDequeue is empty!!!";
-               else
-               {
-                   data=delr(&q);
-                   cout<<"\nDeleted data is : "<<data;
-               }
-               break;
-
-           case 5:
-                if(isempty(q))
-                    cout<<"\nDequeue is empty!!!";
-                else
-                {
-                    cout<<"\nDequeue elements are : ";
-                    print(q);
-                }
-                break;
-        }
-    }
-    return 0;
+cout<<"Enter the element to be inserted:";
+cin>>item;
+d1.add_at_beg(item);
+break;
+case 2:
+cout<<"Enter the element to be inserted:";
+cin>>item;
+d1.add_at_end(item);
+break;
+case 3:
+d1.display();
+break;
+case 4:
+d1.delete_fr_front();
+break;
+case 5:
+d1.delete_fr_rear();
+break;
+case 6:
+exit(1);
+break;
+default:
+cout<<"Invalid choice";
+break;
+}
+}while(c!=7);
+return 0;
 }
