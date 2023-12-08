@@ -82,15 +82,20 @@ def trans():
 
 
 def mul():
-    mul=[]
+    if c1 != r2:
+        print("Matrix multiplication not possible.")
+        return
+    result = []
     for i in range(r1):
-        row=[]
-        for j in range(c1):
-            value=mat1[i][j]*mat2[i][j]
+        row = []
+        for j in range(c2):
+            value = 0
+            for k in range(c1):
+                value += mat1[i][k] * mat2[k][j]
             row.append(value)
-        mul.append(row)
-    for i in mul:
-        print (i)
+        result.append(row)
+    for i in result:
+        print(i)
 
 
 
