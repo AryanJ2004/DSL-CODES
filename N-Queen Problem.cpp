@@ -1,67 +1,76 @@
-#define N 4 
-#include <stdbool.h> 
-#include <stdio.h>
-void printSolution(int board[N][N]) 
-{ 
- for (int i = 0; i < N; i++)  
- { 
- for (int j = 0; j < N; j++) 
- printf(" %d ", board[i][j]); 
- printf("\n"); 
- } 
-} 
-bool isSafe(int board[N][N], int row, int col)
- { 
- int i, j; 
- /* Check this row on left side */
-  for (i = 0; i < col; i++) 
- if (board[row][i]==1) 
- return false; 
-  
- /* Check upper diagonal on left side */  
-for (i = row, j = col; i >= 0 && j >= 0; i--, j--) 
- if (board[i][j]==1) 
- 	return false;
-  
- /* Check lower diagonal on left side */ 
- for (i = row, j = col; j >= 0 && i < N; i++, j--)
+#include <iostream>
+#include <stdlib.h>
+using namespace std;
+int place(int r,int c);
+int NQueen(int r ,int n);
+int print(int n);
+int x[20],count;
+int NQueen(int r,int n)
 {
-  if (board[i][j]==1) 
- return false; 
-   return true; 
+int c,i;
+for(c=1;c<=n;c++)
+{
+if(place(r,c))
+{
+x[r]=c;
+if(r==n)
+{
+print(n);
+}
+else
+{
+NQueen(r+1,n);
 }
 }
-  
-bool solveNQUtil(int board[N][N], int col)
-{ 
- if (col >= N) 
- return true; 
-  
- /* Consider this column and try placing  this queen in all rows one by one */ 
- for (int i = 0; i < N; i++) { 
- if (isSafe(board, i, col)) { 
- board[i][col] = 1; 
- if (solveNQUtil(board, col + 1)) // RECURSION  return true; 
- board[i][col] = 0; // BACKTRACK 
- } 
- }
-  
- return false; 
-} 
-bool solveNQ() 
-{ 
- int board[N][N] = { { 0, 0, 0, 0 },  { 0, 0, 0, 0 }, 
- { 0, 0, 0, 0 }, 
- { 0, 0, 0, 0 } }; 
-  
- if (solveNQUtil(board, 0) == false)  { 
- printf("Solution does not exist");  return false; 
- } 
- printSolution(board); 
- return true; 
-} 
-int main() 
-{ 
- solveNQ(); 
- return 0; 
+}
+return 0;
+}
+int place(int r,int c)
+{
+int j;
+for(j=1;j<=r-1;j++)
+{
+if(x[j]==c)//column
+{
+return 0;
+}
+else
+{
+if(abs(x[j]-c)==abs(j-r))//diagonal
+{
+return 0;
+}
+}
+}
+return 1;
+}
+int print(int n)
+{
+int i,j;
+cout<<"\n\nSolution "<<++count<<"\n\n";
+for(i=1;i<=n;i++)
+{
+cout<<"\t "<<i;
+}
+for(i=1;i<=n;i++)
+{
+cout<<"\n"<<i;
+for(j=1;j<=n;j++)
+{
+if(x[i]==j)
+cout<<"\t Q";
+else
+cout<<"\t -";
+}
+}
+return 0;
+}
+int main()
+{
+int n;
+cout<<"\n ****** N-Queen Solution *****\n";
+cout<<"\n Enter the no. of Queen:-\n";
+cin>>n;
+NQueen(1,n);
+return 0;
 }
